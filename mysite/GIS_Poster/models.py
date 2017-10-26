@@ -257,6 +257,8 @@ METHOD_CHOICES = (
 				('Suitability Analysis', 'Suitability Analysis'),
 				('Thematic Mapping','Thematic Mapping'),
 				('Vulnerability Analysis', 'Vulnerability Analysis'))                                              
+RELEASE_CHOICES = [('Yes', 'Yes'),
+					('No', 'No')]
 
 # Create your models here.
 class Poster(models.Model):
@@ -266,15 +268,21 @@ class Poster(models.Model):
 	degree = MultiSelectField(choices=DEGREE_CHOICES)
 	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES)
 	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, max_choices=1)
-	Course = models.CharField(max_length=50, choices=COURSE_CHOICES)
+	Course = models.CharField(max_length=200, choices=COURSE_CHOICES)
 	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
 	Year = models.CharField(max_length=20, choices=YEAR_CHOICES)
 	FullPosterTitle = models.CharField(max_length=200)
 	ThemeKeywordL1 = MultiSelectField(choices=TOPIC_CHOICES)
 	ThemeKeywordL2 = MultiSelectField(choices=SUBTOPIC_CHOICES)
 	ThemeKeywordL3 = MultiSelectField(choices=METHOD_CHOICES)
-	PlaceKeywordGeonames = IntegerField() #dont know if this should be an integerfield or charfield for multiple geonames
-	SDrivePathway = CharField(max_length=200)
+	PlaceKeywordGeonames = models.CharField(max_length=200) #dont know if this should be an integerfield or charfield for multiple geonames
+	SDrivePathway = models.CharField(max_length=200)
+	image = models.FileField(upload_to='images')
+	ReleaseForm = models.BooleanField()
+	ThumbnailName = models.CharField(max_length=200)
+	ThumbnailPath = models.CharField(max_length=200)
+	PosterPath = models.CharField(max_length=200)
+
 	#Website release form, boolean field but if yes allow them to sign initials
 
 
