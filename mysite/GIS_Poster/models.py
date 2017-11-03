@@ -277,17 +277,16 @@ class Poster(models.Model):
 	ThemeKeywordL3 = MultiSelectField(choices=METHOD_CHOICES, verbose_name='Methodological Keyword')
 	PlaceKeywordGeonames = models.CharField(max_length=200, verbose_name='Place Keywords - Where is your GIS project located?') #dont know if this should be an integerfield or charfield for multiple geonames
 	SDrivePathway = models.CharField(max_length=200, default="pass")
-	image = models.FileField(upload_to='images')
+	image = models.FileField(upload_to='images')#'S:/Posters/GIS Posters/')
 	ReleaseForm = models.BooleanField(verbose_name='Website Release Form')
 	ThumbnailName = models.CharField(max_length=200, default='pass')
 	ThumbnailPath = models.CharField(max_length=200, default='pass')
 	PosterPath = models.CharField(max_length=200, default='pass')
+	PosterWinner = models.BooleanField(verbose_name='Poster Winner', default='False')
+	Approved = models.CharField(max_length=15, default='')
+
 
 	#Website release form, boolean field but if yes allow them to sign initials
-
-
-
-
 	def __str__(self):
 		return self.StudentName
 

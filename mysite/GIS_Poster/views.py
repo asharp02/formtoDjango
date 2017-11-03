@@ -11,14 +11,14 @@ def poster_new(request):
         if form.is_valid():
             print("Form is valid")
             poster = form.save(commit=False)
-            both_names = request.POST.get('first_name') + '_' + request.POST.get('last_name')
+            both_names = request.POST.get('last_name') + '_' + request.POST.get('first_name')
             poster.StudentName = both_names
-            s_years = get_years(request.POST.get('Semester'), request.POST.get('Year'))
-            path = both_names + '_' + request.POST.get('Course') + '_' + request.POST.get('Year')
-            #poster.SDrivePathway = #'S:/Posters/GIS Posters/' + s_years + 'PostersComplete' + request.POST.get('Semester') + request.POST.get('Year') + '/' # + add course path here, add new model field first
-            poster.ThumbnailName = path + '_' + 'thumbnail'
+            school_years = get_years(request.POST.get('Semester'), request.POST.get('Year'))
+            pdf_name = both_names + '_' + request.POST.get('Course') + '_' + request.POST.get('Year')
+            poster.SDrivePathway = 'S:/Posters/GIS Posters/' + school_years + '/' + 'PostersComplete' + request.POST.get('Semester') + request.POST.get('Year') + '/' # + add course path here, add new model field first
+            poster.ThumbnailName = pdf_name + '_' + 'thumbnail'
             #poster.ThumbnailPath = request.POST.get('first_name', '')
-            poster.PosterPath = path
+            poster.PosterPath = pdf_name
             poster.save()
             print("saved form")
             messages.success(request, 'Poster added successfully')
@@ -32,7 +32,8 @@ def poster_new(request):
 
 def get_years(semester, year):
     if(semester == 'Fall'):
-        return str(year) + '-' + str(year+1)
+        next_year = int(year) + 1
+        return year + '-' + str(next_year)
     else:
-        return str(year-1) + '-' + str(year)
-
+        prev_year = int(year) - 1
+        return str(prev_year) + '-' + year
