@@ -1,0 +1,12 @@
+{% block content %}
+
+<form method="POST" class="course-form" action="{% url 'course_new' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ form.errors }}
+    {{ form.non_field_errors }}
+
+
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Poster
+from .models import Poster, Course
 
 
 COURSE_CHOICES = (('GIS101', 
@@ -33,21 +33,23 @@ SEMESTER_CHOICES = (('Spring', 'Spring'),
 YEAR_CHOICES = (('2016', '2016'),
 				('2017', '2017'))
 
+
+
 class PosterCreateForm(forms.ModelForm):
-
-	# def __init__(self, *args, **kwargs):
-	# 	super(PosterCreateForm, self).__init__()
-
-
 	class Meta: 
 		model = Poster
 		fields = ['first_name', 'last_name', 'degree', 'SchoolName',
-					'DepartmentName', 'Course', 'Semester', 'Year',
+					'DepartmentName', 'Course_name', 'Semester', 'Year',
 					'FullPosterTitle', 'ThemeKeywordL1', 'ThemeKeywordL2',
 					'ThemeKeywordL3', 'PlaceKeywordGeonames', 'image',
 					'ReleaseForm']
-	Course = forms.TypedChoiceField(choices=COURSE_CHOICES, widget=forms.RadioSelect())
+	#Course = forms.TypedChoiceField(choices=COURSE_CHOICES, widget=forms.RadioSelect())
+	#Dept_code = Course.objects.get(id='1')
 	Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect())
 	Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect())
 	#ReleaseForm = forms.TypedChoiceField(choices=COURSE_CHOICES, widget=forms.RadioSelect())
 
+class CourseForm(forms.ModelForm):
+	class Meta:
+		model = Course
+		fields = ['Course_name', 'Course_code', 'Dept_code']

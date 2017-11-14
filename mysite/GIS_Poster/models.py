@@ -261,14 +261,34 @@ RELEASE_CHOICES = [('Yes', 'Yes'),
 					('No', 'No')]
 
 # Create your models here.
+
+class Course(models.Model):
+	Course_code = models.CharField(max_length=200, unique=True)
+	Course_name = models.CharField(max_length=200, unique=True)
+	Dept_code = models.CharField(max_length=200) #should have choices with ability to add new
+
+	def __str__(self):
+		# template = '{0.Course_code} {0.Course_name} {0.Dept_code}'
+		# return template.format(self)
+		return (self.Course_name)
 class Poster(models.Model):
+
+
 	first_name = models.CharField(max_length = 200, verbose_name='First Name')
 	last_name = models.CharField(max_length = 200, verbose_name='Last Name')
 	StudentName = models.CharField(max_length = 200, default=first_name)
 	degree = MultiSelectField(choices=DEGREE_CHOICES)
 	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name')
 	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, max_choices=1, verbose_name='Student\'s Department(s)')
-	Course = models.CharField(max_length=200, choices=COURSE_CHOICES, verbose_name='GIS Course')
+	#cc = Course.objects.values('Course_code')
+	
+	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE)#models.CharField(max_length=200, verbose_name='GIS Course')
+	#Course_code = Course.objects.filter(Course_name)
+	#cc = Course.values('Course_code')
+	#cc = Course.values('CN', 'CC', 'DC')
+	Dept_code = models.CharField(max_length=200)#, choices=PosterMetaData dept choices)
+	Course_code = models.CharField(max_length=200)#, choices=PosterMetaData dept choices)
+
 	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
 	Year = models.CharField(max_length=20, choices=YEAR_CHOICES)
 	FullPosterTitle = models.CharField(max_length=200, verbose_name='Title of GIS Poster?')
@@ -286,9 +306,11 @@ class Poster(models.Model):
 	Approved = models.CharField(max_length=15, default='')
 
 
+
 	#Website release form, boolean field but if yes allow them to sign initials
 	def __str__(self):
 		return self.StudentName
+
 
 
 # class Image(models.Model):

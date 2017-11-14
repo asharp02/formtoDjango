@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.contrib import messages
-from .forms import PosterCreateForm
+from .forms import PosterCreateForm, CourseForm
+from .models import Course
 # Create your views here.
 def poster_new(request):
     print("This is at beginning post method")
@@ -11,14 +12,29 @@ def poster_new(request):
         if form.is_valid():
             print("Form is valid")
             poster = form.save(commit=False)
-            both_names = request.POST.get('last_name') + '_' + request.POST.get('first_name')
+
+            semester = request.POST.get('Semester')
+            year = request.POST.get('Year')
+
+            course = request.POST.get('Course_name')
+            course_code = get_course_code(course)
+            dept_code = get_dept(course)
+            f_name = request.POST.get('first_name')
+            l_name = request.POST.get('last_name')
+            both_names = l_name + '_' + f_name
             poster.StudentName = both_names
-            school_years = get_years(request.POST.get('Semester'), request.POST.get('Year'))
-            pdf_name = both_names + '_' + request.POST.get('Course') + '_' + request.POST.get('Year')
-            poster.SDrivePathway = 'S:/Posters/GIS Posters/' + school_years + '/' + 'PostersComplete' + request.POST.get('Semester') + request.POST.get('Year') + '/' # + add course path here, add new model field first
+
+            school_years = get_years(semester, year)
+
+            pdf_name = both_names + '_' + course_code + '_' + year
+            poster.SDrivePathway = 'S:/Posters/GIS Posters/' + school_years + '/' + 'PostersComplete' + semester + year + '/' + course_code + '_' + dept_code + '/' + pdf_name
             poster.ThumbnailName = pdf_name + '_' + 'thumbnail'
             #poster.ThumbnailPath = request.POST.get('first_name', '')
             poster.PosterPath = pdf_name
+            
+            # course = request.POST.get('Course_name')
+            poster.Dept_code = dept_code
+            poster.Course_code = course_code
             poster.save()
             print("saved form")
             messages.success(request, 'Poster added successfully')
@@ -29,6 +45,27 @@ def poster_new(request):
     else:
         form = PosterCreateForm()
     return render(request, 'GIS_Poster/poster_create.html', {'form': form})
+
+def get_dept(course_num):
+    course_obj = Course.objects.filter(pk=course_num)
+    dc_list = course_obj.values_list('Dept_code', flat=True)
+    return dc_list[0]
+
+def get_course_code(course_num):
+    course_obj = Course.objects.filter(pk=course_num)
+    cc_list = course_obj.values_list('Course_code', flat=True)
+    return cc_list[0]
+
+def course_new(request):
+    if request.method == "POST":
+        form = CourseForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Poster added successfully')
+            return render_to_response('GIS_Poster/new_post.html')
+    else:
+        form = CourseForm()
+    return render(request, 'GIS_Poster/course_create.html', {'form': form})
 
 def get_years(semester, year):
     if(semester == 'Fall'):
