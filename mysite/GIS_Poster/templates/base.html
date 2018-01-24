@@ -1,0 +1,21 @@
+{% load staticfiles %}<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}GIS Poster Catalog Form{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/poster.css' %}">
+    {% block stylesheet %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      GIS Poster Catalog Form
+    </header>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    {% block javascript %}{% endblock %}
+  </body>
+</html>

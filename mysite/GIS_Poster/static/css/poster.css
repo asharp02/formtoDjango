@@ -1,0 +1,52 @@
+body {
+    background-color: white;
+    padding-left: 15px;
+}
+.label_tag {
+    color: #417dc1;
+  	font-size: 110%;
+    font-weight: bold;
+}
+
+.help_text {
+	color: black;
+}
+
+header {
+	background-color: #417dc1;
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
+	color:white;
+}
+
+button {
+
+ 	border-radius: 2px;
+    cursor: default;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    margin-right: 16px;
+    height: 35px;
+    line-height: 27px;
+    min-width: 54px;
+    outline: 0px;
+    padding: 0 8px;
+    border: 1px solid #3079ed;
+    color: #fff;
+    box-shadow: none;
+    background-color: #417dc1;
+    background-image: -webkit-linear-gradient(top,#417dc1,#4787ed);
+}
+
+/*
+background: #0066A2;
+color: white;
+border-style: groove;
+border-color: #0066A2;
+height: 34px;
+width: 80px;
+font: bold 15px arial, sans-serif;
+text-shadow:none;*/

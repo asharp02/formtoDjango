@@ -1,0 +1,8 @@
+Django (1.11.6)
+django-multiselectfield (0.1.8)
+olefile (0.44)
+Pillow (4.3.0)
+pip (9.0.1)
+pytz (2017.2)
+setuptools (36.6.0)
+wheel (0.30.0)

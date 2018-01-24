@@ -1,5 +1,7 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.safestring import mark_safe
 
 DEGREE_CHOICES = (('Bachelors', 'Bachelors'),
 				  ('Masters', 'Masters'),
@@ -55,7 +57,7 @@ DEPARTMENT_CHOICES = (('AMER', 'American Studies'),
 				  ('SPN', 'Spanish'),
 				  ('STATS', 'Statistics'),
 				  ('TTS', 'Tufts Technology Services'),
-				  ('UEP', 'Urban and Environmental Policy and Planning (UEP'),
+				  ('UEP', 'Urban and Environmental Policy and Planning (UEP)'),
 				  ('Other', 'Other'))
 
 COURSE_CHOICES = (('GIS101', 
@@ -274,36 +276,40 @@ class Course(models.Model):
 class Poster(models.Model):
 
 
-	first_name = models.CharField(max_length = 200, verbose_name='First Name')
-	last_name = models.CharField(max_length = 200, verbose_name='Last Name')
+	first_name = models.CharField(max_length = 200, verbose_name='Student\'s First Name')
+	last_name = models.CharField(max_length = 200, verbose_name='Student\'s Last Name')
 	StudentName = models.CharField(max_length = 200, default=first_name)
-	degree = MultiSelectField(choices=DEGREE_CHOICES)
-	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name')
+	degree = MultiSelectField(choices=DEGREE_CHOICES, verbose_name='Student\'s Degree')
+	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name?')
 	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, max_choices=1, verbose_name='Student\'s Department(s)')
 	#cc = Course.objects.values('Course_code')
 	
-	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE)#models.CharField(max_length=200, verbose_name='GIS Course')
+	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='GIS Course', default=Course.objects.all()[0])#models.CharField(max_length=200, verbose_name='GIS Course')
 	#Course_code = Course.objects.filter(Course_name)
 	#cc = Course.values('Course_code')
 	#cc = Course.values('CN', 'CC', 'DC')
 	Dept_code = models.CharField(max_length=200)#, choices=PosterMetaData dept choices)
 	Course_code = models.CharField(max_length=200)#, choices=PosterMetaData dept choices)
 
-	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
+	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES, verbose_name='Semester')
 	Year = models.CharField(max_length=20, choices=YEAR_CHOICES)
-	FullPosterTitle = models.CharField(max_length=200, verbose_name='Title of GIS Poster?')
+	FullPosterTitle = models.CharField(max_length=200, verbose_name='Title of GIS Poster')
 	ThemeKeywordL1 = MultiSelectField(choices=TOPIC_CHOICES, verbose_name='Topic Keyword')
 	ThemeKeywordL2 = MultiSelectField(choices=SUBTOPIC_CHOICES, verbose_name='Sub-Topic Keyword')
 	ThemeKeywordL3 = MultiSelectField(choices=METHOD_CHOICES, verbose_name='Methodological Keyword')
-	PlaceKeywordGeonames = models.CharField(max_length=200, verbose_name='Place Keywords - Where is your GIS project located?') #dont know if this should be an integerfield or charfield for multiple geonames
+	PlaceKeywordGeonames = models.CharField(max_length=200, verbose_name='Place Keywords - Where is your GIS Project located') #dont know if this should be an integerfield or charfield for multiple geonames
 	SDrivePathway = models.CharField(max_length=200, default="pass")
-	image = models.FileField(upload_to='images')#'S:/Posters/GIS Posters/')
-	ReleaseForm = models.BooleanField(verbose_name='Website Release Form')
+	PDFPoster = models.FileField(verbose_name='PDF of Poster', upload_to='images')#'S:/Posters/GIS Posters/')
+	#release_form = models.BooleanField(verbose_name='Website Release Form')
 	ThumbnailName = models.CharField(max_length=200, default='pass')
 	ThumbnailPath = models.CharField(max_length=200, default='pass')
 	PosterPath = models.CharField(max_length=200, default='pass')
 	PosterWinner = models.BooleanField(verbose_name='Poster Winner', default='False')
-	Approved = models.CharField(max_length=15, default='')
+	release_form = models.CharField(max_length=15, default='')
+
+	reviewed = models.BooleanField(default='False')
+	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
+
 
 
 

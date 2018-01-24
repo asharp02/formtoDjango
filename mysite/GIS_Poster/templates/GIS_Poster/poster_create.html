@@ -1,12 +1,55 @@
-{% block content %}
+{%extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+  <script>
+   		$("#id_PDFPoster").change(function () {
+       	var first_name = $("input[name=first_name]").val();
+       	var last_name = $("input[name=last_name]").val();	
+       	var year = $("input[name=Year]").val();
+       	var semester = $("input[name=Semester]").val();
+       	var course = $("input[name=Course_name]").val();
+       	console.log("pdf changed")
+       	console.log(first_name)
+       	console.log(last_name)
+       	console.log(year)
+       	console.log(semester)
+       	console.log(course)
+       	var year_range
+       	if (semester == "Spring"){
+       		var first_year = year - 1
+       		year_range = String(first_year) + "-" + String(year)
+       	}else{
+       		console.log("Semester is not spring")
+       		year_range = String(year) + "=" + String(year+1)
+       	}
+       	console.log(year_range)
+    	document.getElementById("posterpath").innerHTML = "The poster will be saved at: " + "S:/Posters/GIS Posters/" + first_name;
+     });
 
+    	// document.getElementById("posterpath").innerHTML = "yesyesyes";
+// Get all necessary fields after PDFPoster has been selected and send that to ajax??
+//display freetext after pdfposter is changed
+  </script>
+{% endblock %}
+
+{% block content %}
 <form method="POST" class="poster-form" action="{% url 'poster_new' %}" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <!-- {{ form.as_table }}  -->
+    <!-- <pre>{{form.as_p}}</pre> -->
+
+    {% for field in form %}
+    		<br><div class="label_tag">{{field.label_tag}}</div>
+    		 <div class="help_text">{{field.help_text}}</div>
+    		 {{field}}<br>
+	{% endfor %}
+
+	<p id="posterpath"> Blah and Blah</p>
     {{ form.errors }}
     {{ form.non_field_errors }}
+    
 
 
-    <button type="submit" class="save btn btn-default">Save</button>
+    <button type="submit" class="submit-button">Submit</button>
 </form>
 {% endblock %}
