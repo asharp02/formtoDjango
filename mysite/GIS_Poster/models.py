@@ -268,10 +268,13 @@ class Course(models.Model):
 	Course_code = models.CharField(max_length=200, unique=True)
 	Course_name = models.CharField(max_length=200, unique=True)
 	Dept_code = models.CharField(max_length=200) #should have choices with ability to add new
+	
+	Course_Dept = models.CharField(max_length=200)
 
 	def __str__(self):
 		# template = '{0.Course_code} {0.Course_name} {0.Dept_code}'
 		# return template.format(self)
+		# return u'{0}'.format(self.Course_name)
 		return (self.Course_name)
 class Poster(models.Model):
 

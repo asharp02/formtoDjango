@@ -73,7 +73,12 @@ class Course_add():
         if request.method == "POST":
             form = CourseForm(request.POST, request.FILES)
             if form.is_valid():
-                form.save()
+                course = form.save(commit=False)
+                name = request.POST.get('Course_code')
+                dept = request.POST.get('Dept_code')
+                
+                course.Course_Dept = name + "_" + dept
+                course.save()
                 messages.success(request, 'Poster added successfully')
                 return render_to_response('GIS_Poster/new_post.html')
         else:

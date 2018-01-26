@@ -42,8 +42,8 @@ class PosterCreateForm(forms.ModelForm):
 		fields = ['first_name', 'last_name', 'degree', 'SchoolName',
 					'DepartmentName', 'Course_name', 'Semester', 'Year',
 					'FullPosterTitle', 'ThemeKeywordL1', 'ThemeKeywordL2',
-					'ThemeKeywordL3', 'PlaceKeywordGeonames', 'PDFPoster',
-					'release_form']
+					'ThemeKeywordL3', 'PlaceKeywordGeonames', 'release_form',
+					'PDFPoster']
 		help_texts = {
 			'SchoolName': 'Which School is the student housed in? Choose all that apply',
 			'DepartmentName': 'Which department is the student in? If your department is not listed, please enter it below.',
@@ -55,11 +55,11 @@ class PosterCreateForm(forms.ModelForm):
 			'PlaceKeywordGeonames' : 'You must use Geonames to get this code. A Lab Assistant will help you with this field! Lab Assistants, follow the directions on accessing Geonames in directions, please navigate to: http://www.geonames.org',
 		}
 	release_form = forms.TypedChoiceField(choices=RELEASE_CHOICES, widget=forms.RadioSelect(), help_text='The student has signed the website release form?')
-	Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial=Course.objects.all()[0], help_text='Which GIS Course is the student currently enrolled in?')
+	Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial=Course.objects.all()[0], to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in?')
 	Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect(), help_text='Which Semester was the student enrolled in GIS?')
 	Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect(), help_text='What year was the student enrolled in GIS')
 	
-	#Course_name = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect())
+	#Course_name = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect())"""initial=Course.objects.all()[0],""" 
 
 	#ReleaseForm = forms.TypedChoiceField(choices=COURSE_CHOICES, widget=forms.RadioSelect())
 
@@ -67,6 +67,7 @@ class CourseForm(forms.ModelForm):
 	class Meta:
 		model = Course
 		fields = ['Course_name', 'Course_code', 'Dept_code']
+
 		
 class PosterEditForm(forms.ModelForm):
 	first = forms.ModelChoiceField(queryset=Poster.objects.all().order_by('first_name'))
