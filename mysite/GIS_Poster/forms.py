@@ -30,8 +30,8 @@ SEMESTER_CHOICES = (('Spring', 'Spring'),
 					('Summer', 'Summer'),
 					('Fall', 'Fall'))
 
-YEAR_CHOICES = (('2016', '2016'),
-				('2017', '2017'))
+YEAR_CHOICES = (('2017', '2017'),
+				('2018', '2018'))
 
 RELEASE_CHOICES = [('Yes', 'Yes'),
 					('No', 'No')]
@@ -55,18 +55,17 @@ class PosterCreateForm(forms.ModelForm):
 			'PlaceKeywordGeonames' : 'You must use Geonames to get this code. A Lab Assistant will help you with this field! Lab Assistants, follow the directions on accessing Geonames in directions, please navigate to: http://www.geonames.org',
 		}
 	release_form = forms.TypedChoiceField(choices=RELEASE_CHOICES, widget=forms.RadioSelect(), help_text='The student has signed the website release form?')
-	Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial=Course.objects.all()[0], to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in?')
+	Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial="None", to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in?')
 	Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect(), help_text='Which Semester was the student enrolled in GIS?')
 	Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect(), help_text='What year was the student enrolled in GIS')
-	
-	#Course_name = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect())"""initial=Course.objects.all()[0],""" 
-
-	#ReleaseForm = forms.TypedChoiceField(choices=COURSE_CHOICES, widget=forms.RadioSelect())
 
 class CourseForm(forms.ModelForm):
 	class Meta:
 		model = Course
 		fields = ['Course_name', 'Course_code', 'Dept_code']
+		help_texts = {
+		'Course_name': 'Whats the name??'
+		}
 
 		
 class PosterEditForm(forms.ModelForm):

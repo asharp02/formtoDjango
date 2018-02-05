@@ -89,8 +89,8 @@ SEMESTER_CHOICES = (('Spring', 'Spring'),
 					('Summer', 'Summer'),
 					('Fall', 'Fall'))
 
-YEAR_CHOICES = (('2016', '2016'),
-				('2017', '2017'))
+YEAR_CHOICES = ((2017, 2017),
+				(2018, 2018))
 
 
 TOPIC_CHOICES = (('AWB', 'Animal, Wildlife and Biota'),
@@ -267,43 +267,38 @@ RELEASE_CHOICES = [('Yes', 'Yes'),
 class Course(models.Model):
 	Course_code = models.CharField(max_length=200, unique=True)
 	Course_name = models.CharField(max_length=200, unique=True)
-	Dept_code = models.CharField(max_length=200) #should have choices with ability to add new
+	Dept_code = models.CharField(max_length=200) 
 	
 	Course_Dept = models.CharField(max_length=200)
 
 	def __str__(self):
-		# template = '{0.Course_code} {0.Course_name} {0.Dept_code}'
-		# return template.format(self)
-		# return u'{0}'.format(self.Course_name)
-		return (self.Course_name)
+		return str(self.Course_name)
 class Poster(models.Model):
 
+	def upload_path_handler(instance, filename):
+		return "{id}".format(id=instance.SDrivePathway)
 
 	first_name = models.CharField(max_length = 200, verbose_name='Student\'s First Name')
 	last_name = models.CharField(max_length = 200, verbose_name='Student\'s Last Name')
 	StudentName = models.CharField(max_length = 200, default=first_name)
 	degree = MultiSelectField(choices=DEGREE_CHOICES, verbose_name='Student\'s Degree')
 	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name?')
-	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, max_choices=1, verbose_name='Student\'s Department(s)')
-	#cc = Course.objects.values('Course_code')
+	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, verbose_name='Student\'s Department(s)')
 	
-	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='GIS Course', default=Course.objects.all()[0])#models.CharField(max_length=200, verbose_name='GIS Course')
-	#Course_code = Course.objects.filter(Course_name)
-	#cc = Course.values('Course_code')
-	#cc = Course.values('CN', 'CC', 'DC')
-	Dept_code = models.CharField(max_length=200)#, choices=PosterMetaData dept choices)
-	Course_code = models.CharField(max_length=200)#, choices=PosterMetaData dept choices)
+	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='GIS Course')
 
+	Dept_code = models.CharField(max_length=200)
+	Course_code = models.CharField(max_length=200)
+	Year_range = models.CharField(max_length=200, default = "2017")
 	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES, verbose_name='Semester')
-	Year = models.CharField(max_length=20, choices=YEAR_CHOICES)
+	Year = models.IntegerField(choices=YEAR_CHOICES)
 	FullPosterTitle = models.CharField(max_length=200, verbose_name='Title of GIS Poster')
 	ThemeKeywordL1 = MultiSelectField(choices=TOPIC_CHOICES, verbose_name='Topic Keyword')
 	ThemeKeywordL2 = MultiSelectField(choices=SUBTOPIC_CHOICES, verbose_name='Sub-Topic Keyword')
 	ThemeKeywordL3 = MultiSelectField(choices=METHOD_CHOICES, verbose_name='Methodological Keyword')
 	PlaceKeywordGeonames = models.CharField(max_length=200, verbose_name='Place Keywords - Where is your GIS Project located') #dont know if this should be an integerfield or charfield for multiple geonames
-	SDrivePathway = models.CharField(max_length=200, default="pass")
-	PDFPoster = models.FileField(verbose_name='PDF of Poster', upload_to='images')#'S:/Posters/GIS Posters/')
-	#release_form = models.BooleanField(verbose_name='Website Release Form')
+	SDrivePathway = models.CharField(max_length=1000, default="pass")
+	PDFPoster = models.FileField(verbose_name='PDF of Poster', upload_to= upload_path_handler, max_length=500)
 	ThumbnailName = models.CharField(max_length=200, default='pass')
 	ThumbnailPath = models.CharField(max_length=200, default='pass')
 	PosterPath = models.CharField(max_length=200, default='pass')
@@ -313,36 +308,5 @@ class Poster(models.Model):
 	reviewed = models.BooleanField(default='False')
 	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
 
-
-
-
-	#Website release form, boolean field but if yes allow them to sign initials
 	def __str__(self):
 		return self.StudentName
-
-
-
-# class Image(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-#                              related_name='images_created')
-#     title = models.CharField(max_length=200)
-#     slug = models.SlugField(max_length=200, blank=True)
-#     url = models.URLField()
-#     image = models.ImageField(upload_to='images/%Y/%m/%d')
-#     description = models.TextField(blank=True)
-#     created = models.DateTimeField(auto_now_add=True,
-#                                    db_index=True)
-#     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
-#                                         related_name='images_liked',
-#                                         blank=True)
-
-#     def __str__(self):
-#         return self.title
-
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             self.slug = slugify(self.title)
-#         super(Image, self).save(*args, **kwargs)
-
-#     def get_absolute_url(self):
-#         return reverse('images:detail', args=[self.id, self.slug])
