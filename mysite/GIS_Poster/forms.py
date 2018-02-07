@@ -2,30 +2,6 @@ from django import forms
 from .models import Poster, Course
 
 
-COURSE_CHOICES = (('GIS101', 
-			'GIS 101/ ENV 107/ INTR 81: Introduction to Geographic Information Systems'),
-		  ('UEP232',
-		  	'UEP 0232: Intro to GIS- GIS for Urban Analysis'),
-		  ('GIS 102',
-		  	'GIS 102/ UEP 29422/ ENV 197: Advanced Geographic Information Systems'),
-		  ('DHP207',
-		  	'Fletcher DHP P207: GIS for International Applications'),
-		  ('CEE187',
-		  	'CEE 187: Geographic Information Systems'),
-		  ('NUTR0231',
-		  	'NUTR 231: Fundamentals of GIS for Food, Agriculture, and Environmental Applications'),
-		  ('EOS104',
-		  	'EOS 104: Geological Applications of GIS'),
-		  ('CEE194',
-		  	'CEE 194A: Introduction to Remote Sensing'),
-		  ('PH262',
-		  	'PH 0262: GIS for Public Health'),
-		  ('MCM1009',
-		  	'MCM 1009: GIS for Conservation Medicine'),
-		  ('Not enrolled in a GIS Course',
-		  	'Not enrolled in a GIS Course'),
-		  ('Other', 'Other')
-		  )
 SEMESTER_CHOICES = (('Spring', 'Spring'),
 					('Summer', 'Summer'),
 					('Fall', 'Fall'))
@@ -57,14 +33,16 @@ class PosterCreateForm(forms.ModelForm):
 	release_form = forms.TypedChoiceField(choices=RELEASE_CHOICES, widget=forms.RadioSelect(), help_text='The student has signed the website release form?')
 	Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial="None", to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in?')
 	Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect(), help_text='Which Semester was the student enrolled in GIS?')
-	Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect(), help_text='What year was the student enrolled in GIS')
+	Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect(), help_text='What year was the student enrolled in GIS?')
 
 class CourseForm(forms.ModelForm):
 	class Meta:
 		model = Course
 		fields = ['Course_name', 'Course_code', 'Dept_code']
 		help_texts = {
-		'Course_name': 'Whats the name??'
+		'Course_name': 'What is the full name of the course? ie. \'GIS 101/ ENV 107/ INTR 81: Introduction to Geographic Information Systems\'',
+		'Course_code': 'What is the course code? \n If there are multiple course codes, separate them by an underscore. ie. \'GIS 101_ENV107\'.',
+		'Dept_code': 'What is the department code? ie. \'UndergradGIS\''
 		}
 
 		

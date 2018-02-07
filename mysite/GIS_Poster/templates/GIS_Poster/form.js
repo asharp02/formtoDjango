@@ -16,3 +16,5 @@ $(document).ready(function(){
     });
 
 });
+
+<title>{% block title %}GIS Poster Catalog Form{% endblock %}</title>

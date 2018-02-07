@@ -40,10 +40,11 @@
 {% endblock %}
 
 {% block content %}
+    <header>
+      GIS Poster Catalog Form
+    </header>
 <form method="POST" class="poster-form" action="{% url 'poster_new' %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <!-- {{ form.as_table }}  -->
-    <!-- <pre>{{form.as_p}}</pre> -->
 
     {% for field in form %}
     		<br><div class="label_tag">{{field.label_tag}}</div>

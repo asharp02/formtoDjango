@@ -1,5 +1,6 @@
 body {
-    background-color: white;
+
+    background-color: #EDF3F9;
     padding-left: 15px;
 }
 .label_tag {
@@ -9,7 +10,7 @@ body {
 }
 
 .help_text {
-	color: black;
+	color: grey;
 }
 
 header {
