@@ -4,6 +4,8 @@ from .forms import PosterCreateForm, CourseForm, PosterEditForm
 from .models import Course, Poster
 from django.views.generic.edit import UpdateView
 
+"""takes in a semester as a string and a year and returns the school-year
+range as a string"""
 def get_years(semester, year):
     if(semester == 'Spring'):
         prev_year = int(year) - 1
@@ -11,7 +13,7 @@ def get_years(semester, year):
     else:
         next_year = int(year) + 1
         return str(year) + '-' + str(next_year)
-# Create your views here.
+
 class Poster_add():
 
     def poster_new(request):
@@ -20,10 +22,11 @@ class Poster_add():
             if form.is_valid():
           
                 poster = form.save(commit=False)
-
+                """before saving the poster to the Django database, we extract
+                the fields necessary to use when forming the SDrivePathway
+                and the thumbnail name/path."""
                 semester = request.POST.get('Semester')
                 year = request.POST.get('Year')
-
                 course = request.POST.get('Course_name')
                 course_code = course.split('_')[0]
                 dept_code = course.split('_')[1]
@@ -39,7 +42,6 @@ class Poster_add():
                 print (str(school_years))
                 poster.SDrivePathway =  'S:/Posters/GIS Posters/' +'/' + str(school_years) + '/' + 'PostersComplete' + semester + year + '/' + course + '/' + pdf_name
                 poster.ThumbnailName = pdf_name + '_' + 'thumbnail'
-                #poster.ThumbnailPath = request.POST.get('first_name', '')
                 poster.PosterPath = pdf_name
                 
                 poster.Dept_code = dept_code

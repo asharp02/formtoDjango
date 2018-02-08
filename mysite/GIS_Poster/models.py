@@ -249,6 +249,7 @@ class Course(models.Model):
 
 	def __str__(self):
 		return str(self.Course_name)
+
 class Poster(models.Model):
 
 	def upload_path_handler(instance, filename):
@@ -260,12 +261,7 @@ class Poster(models.Model):
 	degree = MultiSelectField(choices=DEGREE_CHOICES, verbose_name='Student\'s Degree')
 	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name?')
 	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, verbose_name='Student\'s Department(s)')
-	
 	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='GIS Course')
-
-	Dept_code = models.CharField(max_length=200)
-	Course_code = models.CharField(max_length=200)
-	Year_range = models.CharField(max_length=200, default = "2017")
 	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES, verbose_name='Semester')
 	Year = models.IntegerField(choices=YEAR_CHOICES)
 	FullPosterTitle = models.CharField(max_length=200, verbose_name='Title of GIS Poster')
@@ -280,7 +276,6 @@ class Poster(models.Model):
 	PosterPath = models.CharField(max_length=200, default='pass')
 	PosterWinner = models.BooleanField(verbose_name='Poster Winner', default='False')
 	release_form = models.CharField(max_length=15, default='')
-
 	reviewed = models.BooleanField(default='False')
 	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
 
