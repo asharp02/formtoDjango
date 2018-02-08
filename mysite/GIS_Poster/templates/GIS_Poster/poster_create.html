@@ -8,13 +8,6 @@
        	var year = $('input[name="Year"]:checked').val();
        	var semester = $('input[name="Semester"]:checked').val();
        	var course = $('input[name="Course_name"]:checked').val();
-       	// var course = document.getElementById("Course_name").htmlFor;
-       	console.log("pdf changed")
-       	console.log(first_name)
-       	console.log(last_name)
-       	console.log(year)
-       	console.log(semester)
-       	console.log(course)
        	var year_range
        	if (semester == "Spring"){
        		var first_year = year - 1
@@ -24,13 +17,13 @@
        		next_year = parseInt(year)+1
        		year_range = String(year) + "-" + String(next_year)
        	}
-       	console.log(course)
        	var course_code = String(course).substring(0, String(course).indexOf("_"))
-       	console.log(year_range)
-       	console.log(course_code)
-
-    	document.getElementById("posterpath").innerHTML = "The poster will be saved at: " + "S:/Posters/GIS Posters/" + year_range + "/" +
-    	"PostersComplete" + semester + year + "/" + course + "/" + last_name + "_" + first_name + "_" + course_code + "_" + year + ".pdf";
+       	console.log("first" + first_name);
+       	console.log("year" + year);
+       	if (first_name != "" && last_name != "" && year != null && semester != null && course != null){
+    		document.getElementById("posterpath").innerHTML = "The poster will be saved at: " + "S:/Posters/GIS Posters/" + year_range + "/" +
+    		"PostersComplete" + semester + year + "/" + course + "/" + last_name + "_" + first_name + "_" + course_code + "_" + year + ".pdf";
+    	}
      });
 
     	// document.getElementById("posterpath").innerHTML = "yesyesyes";
