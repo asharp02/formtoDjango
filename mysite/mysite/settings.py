@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'GIS_Poster',
     'multiselectfield',
+    'simple_autocomplete',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'S:/Posters/GIS Posters/'
+LOGIN_REDIRECT_URL = '/'
+SIMPLE_AUTOCOMPLETE = {'Poster': {'search_field': 'FullPosterTitle'}}

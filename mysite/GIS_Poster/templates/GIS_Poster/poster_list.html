@@ -1,0 +1,15 @@
+{%extends "base.html" %}
+{% block content %}
+<h1>Posters</h1>
+<ul>
+{% csrf_token %}
+{% for poster in object_list %}
+   
+    <input type="radio" name=poster value=poster> {{ poster.FullPosterTitle }} - {{ poster.StudentName }}<br>
+
+{% empty %}
+    <li>No articles match.</li>
+{% endfor %}
+<button type="submit" class="save btn btn-default">Search</button>
+</ul>
+{% endblock %}

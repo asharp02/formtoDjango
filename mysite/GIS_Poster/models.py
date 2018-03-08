@@ -280,4 +280,4 @@ class Poster(models.Model):
 	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
 
 	def __str__(self):
-		return self.StudentName
+		return self.FullPosterTitle

@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <title>{% block title %}GIS Poster Catalog Form{% endblock %}</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript">
+    </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+
     <link rel="stylesheet" href="{% static '/css/poster.css' %}" type="text/css">
     {% block stylesheet %}{% endblock %}
   </head>
@@ -11,7 +15,5 @@
       {% block content %}
       {% endblock %}
     </main>
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-    {% block javascript %}{% endblock %}
   </body>
 </html>

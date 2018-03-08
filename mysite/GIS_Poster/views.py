@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.contrib import messages
-from .forms import PosterCreateForm, CourseForm, PosterEditForm
+from django.http import Http404, HttpResponseRedirect, HttpResponse
+from .forms import PosterCreateForm, CourseForm, PosterEditForm, PosterSearchForm
 from .models import Course, Poster
 from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
+from django.contrib.auth.decorators import login_required
+import json
+from django.core.exceptions import ValidationError
 
 """takes in a semester as a string and a year and returns the school-year
 range as a string"""
@@ -51,13 +56,13 @@ class Poster_add():
                 messages.success(request, 'Poster added successfully')
                 return render_to_response('GIS_Poster/new_post.html')
             else:
-                print ('ERROR')
                 print (form.errors)
         else:
             form = PosterCreateForm()
         return render(request, 'GIS_Poster/poster_create.html', {'form': form})
 
 class Course_add():
+    @login_required
     def course_new(request):
         if request.method == "POST":
             form = CourseForm(request.POST, request.FILES)
@@ -69,56 +74,42 @@ class Course_add():
                 course.Course_Dept = name + "_" + dept
                 course.save()
                 messages.success(request, 'Poster added successfully')
-                return render_to_response('GIS_Poster/new_post.html')
+                return render_to_response('GIS_Poster/new_course.html')
         else:
             form = CourseForm()
         return render(request, 'GIS_Poster/course_create.html', {'form': form})
 
-class Poster_update():
-    def edit_poster(request):
-        #pass poster model record name to poster_create which could be able to create and update existing record
-        #print ("METHOD IS POST" + request)
-        form = PosterEditForm(request.POST, request.FILES)
-        print (request.POST.get('first'))
-        poster = Poster.objects.filter(StudentName=request.POST.get('first'))
-        print (poster)
-        #print ("METHOD IS POST")
-
+class PosterSearch():
+    @login_required
+    def poster_search(request):
         if request.method == "POST":
-             print ("METHOD IS POST")
-             if form.is_valid():
-                 form.save()
-                 return render(request, 'GIS_Poster/poster_create.html', {'form': poster})
-                 #return render_to_response('GIS_Poster/new_post.html')
+            form = PosterSearchForm(request.POST, request.FILES)
+            if form.is_valid():
+                pos_name = request.POST.get('poster_name')
+                # try:
+                poster_pk = Poster.objects.get(FullPosterTitle=pos_name).pk
+                return redirect('/poster/update/' + str(poster_pk))
+        #         except:
+                    
+        #             #raise ValidationError(('Invalid value'),code='invalid')
+        # #            render(request, 'GIS_Poster/poster_search', {'form':form})
+
         else:
-             form = PosterEditForm()
-             print ("REQUEST>POST IS :" + request.POST.get('first'))
-        #print (request.POST)
-        return render(request, 'GIS_Poster/poster_create.html', {'form': form})
-        # if request.is_ajax():
-        #     data = serializers.serialize('json', posters)
-        #     return HttpResponse(data, 'json')
-        # else:
-        #     return render_to_response('GIS_Poster/poster_update_form.html', {'first_name':posters}, context=RequestContext(request))
-        # if request.method == "POST":
-        #     form = PosterEditForm(request.POST)
-        #     print (request.POST.get('first'))
-        #     if form.is_valid:
-        #         return HttpResponseRedirect('GIS_Poster/new_post.html')
-        
-        # return render(request, 'GIS_Poster/poster_update_form.html', {'form': form})
-        # model = Poster
-    # fields = ['first_name']
-    # template_name_suffix = '_update_form'
+            form = PosterSearchForm()
+        return render(request, 'GIS_Poster/poster_search.html', {'form': form})
 
-    # def get_object(self, *args, **kwargs):
-    #     poster = get_object_or_404(first_name, pk=self.kwargs['pk'])
 
-    #     # We can also get user object using self.request.user  but that doesnt work
-    #     # for other models.
+class PosterUpdate(UpdateView):
+    model = Poster
+    #fields = '__all__'
+    # form_class = PosterCreateForm
+    template_name = 'GIS_Poster/poster_update_form.html'
+    form_class = PosterEditForm
+     
+    #success_url = ('<h1>No Page Here</h1>') 
+    success_url = ('/poster/success')
 
-    #     return poster
-
-    # def get_success_url(self, *args, **kwargs):
-    #     return reverse("poster/new")
-  
+class PosterSuccess():
+    @login_required
+    def poster_success(request):
+        return render_to_response('GIS_Poster/new_post.html')

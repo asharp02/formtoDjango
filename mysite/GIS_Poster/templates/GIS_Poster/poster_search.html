@@ -1,11 +1,13 @@
 {%extends "base.html" %}
 {% block content %}
     <header>
-      GIS Course Form
+      GIS Poster Update Form
     </header>
     <a href="/accounts/logout">Logout</a>
-<form method="POST" class="course-form" action="{% url 'course_new' %}" enctype="multipart/form-data">
-    {% csrf_token %}
+
+<form method="POST" class="poster-search" action="{% url 'poster_search' %}" enctype="multipart/form-data">
+     {% csrf_token %}
+     
      {% for field in form %}
     		<br><div class="label_tag">{{field.label_tag}}</div>
     		 <div class="help_text">{{field.help_text}}</div>
@@ -13,8 +15,12 @@
 	{% endfor %}
     {{ form.errors }}
     {{ form.non_field_errors }} <br>
+<!-- <div class="ui-widget">
+  <label for="FullPosterTitle">Drugs: </label>
+  <input id="FullPosterTitle">
+</div> -->
 
 
-    <button type="submit" class="save btn btn-default">Submit</button>
+    <button type="submit" class="save btn btn-default">Search</button>
 </form>
 {% endblock %}

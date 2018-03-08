@@ -10,6 +10,10 @@ body {
   	font-size: 115%;
     font-weight: bold;
 }
+a {
+    text-align: right;
+    float: right;
+}
 
 .help_text {
 	color: grey;
@@ -24,6 +28,7 @@ header {
 	font-size: 30px;
 	font-weight: bold;
 	color:white;
+    /*padding: 5px;*/
 }
 
 button {

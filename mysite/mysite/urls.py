@@ -18,6 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'', include('GIS_Poster.urls')),
+    url(r'^simple-autocomplete/', include('simple_autocomplete.urls', namespace='simple_autocomplete')),
 
 ]
