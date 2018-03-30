@@ -41,7 +41,7 @@ class Poster_add():
                 poster.StudentName = both_names
 
                 school_years = get_years(semester, year)
-
+                poster.AcademicYear = school_years
                 pdf_name = both_names + '_' + course_code + '_' + year
                 
                 print (str(school_years))
@@ -86,9 +86,10 @@ class PosterSearch():
             form = PosterSearchForm(request.POST, request.FILES)
             if form.is_valid():
                 pos_name = request.POST.get('poster_name')
+                print(pos_name)
                 # try:
-                poster_pk = Poster.objects.get(FullPosterTitle=pos_name).pk
-                return redirect('/poster/update/' + str(poster_pk))
+                #poster_pk = Poster.objects.get(FullPosterTitle=pos_name).pk
+                return redirect('/poster/update/' + str(pos_name))
         #         except:
                     
         #             #raise ValidationError(('Invalid value'),code='invalid')

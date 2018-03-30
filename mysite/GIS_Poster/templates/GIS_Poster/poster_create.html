@@ -3,27 +3,52 @@
 {% block javascript %}
 
   <script>
-   		$("#id_PDFPoster").change(function () {
-       	var first_name = $("input[name=first_name]").val();
-       	var last_name = $("input[name=last_name]").val();	
-       	var year = $('input[name="Year"]:checked').val();
-       	var semester = $('input[name="Semester"]:checked').val();
-       	var course = $('input[name="Course_name"]:checked').val();
-       	var year_range
-       	if (semester == "Spring"){
-       		var first_year = year - 1
-       		year_range = String(first_year) + "-" + String(year)
-       	}else{
-       		next_year = parseInt(year)+1
-       		year_range = String(year) + "-" + String(next_year)
-       	}
-       	var course_code = String(course).substring(0, String(course).indexOf("_"))
+	$("#id_PDFPoster").change(function () {
+		console.log("YEAAAA")
+	   	var first_name = $("input[name=first_name]").val();
+	   	var last_name = $("input[name=last_name]").val();	
+	   	var year = $('input[name="Year"]:checked').val();
+	   	var semester = $('input[name="Semester"]:checked').val();
+	   	var course = $('input[name="Course_name"]:checked').val();
+	   	var year_range
+	   	if (semester == "Spring"){
+	   		var first_year = year - 1
+	   		year_range = String(first_year) + "-" + String(year)
+	   	}else{
+	   		next_year = parseInt(year)+1
+	   		year_range = String(year) + "-" + String(next_year)
+	   	}
+	   	var course_code = String(course).substring(0, String(course).indexOf("_"))
 
-       	if (first_name != "" && last_name != "" && year != null && semester != null && course != null){
-    		document.getElementById("posterpath").innerHTML = "The poster will be saved at: " + "S:/Posters/GIS Posters/" + year_range + "/" +
-    		"PostersComplete" + semester + year + "/" + course + "/" + last_name + "_" + first_name + "_" + course_code + "_" + year + ".pdf";
-    	}
-     });
+	   	if (first_name != "" && last_name != "" && year != null && semester != null && course != null){
+			document.getElementById("posterpath").innerHTML = "The poster will be saved at: " + "S:/Posters/GIS Posters/" + year_range + "/" +
+			"PostersComplete" + semester + year + "/" + course + "/" + last_name + "_" + first_name + "_" + course_code + "_" + year + ".pdf";
+		}
+	 });
+
+	$("#id_release_form_0").click(function() {
+		if (document.getElementById("textInput") == null){
+			$("#id_release_form").after('<label for="textInput" id="textInputLabel"> Initials Box: </label> <input type="text" id="textInput" value="" name=textInput>');
+		}
+	});
+
+	$("#id_release_form_1").click(function() {
+		if (document.getElementById("textInput") != null){
+			$("#textInput").remove();
+			$("#textInputLabel").remove();
+
+		}
+	});
+	$(document).ready(function(){
+		$("#poster-form").validate({
+			rules: {
+				textInput: {
+					required: true,
+					minlength: 2
+				}
+			}
+		})
+	});
 
   </script>
 {% endblock %}
@@ -32,7 +57,7 @@
     <header>
       GIS Poster Catalog Form
     </header>
-<form method="POST" class="poster-form" action="{% url 'poster_new' %}" enctype="multipart/form-data">
+<form id="poster-form" method="POST" class="poster-form" action="{% url 'poster_new' %}" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% for field in form %}
@@ -47,6 +72,6 @@
     
 
 
-    <button type="submit" class="submit-button">Submit</button>
+    <button id="submit-button" type="submit" class="submit-button">Submit</button>
 </form>
 {% endblock %}

@@ -19,3 +19,10 @@
             "PostersComplete" + semester + year + "/" + course + "/" + last_name + "_" + first_name + "_" + course_code + "_" + year + ".pdf";
         }
      });
+
+             {% for field in form %}
+            <br><div class="label_tag">{{field.label_tag}}</div>
+             <div class="help_text">{{field.help_text}}</div>
+             {{field}}<br>
+    {% endfor %}
+

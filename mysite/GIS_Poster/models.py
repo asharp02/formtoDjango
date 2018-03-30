@@ -275,9 +275,15 @@ class Poster(models.Model):
 	ThumbnailPath = models.CharField(max_length=200, default='pass')
 	PosterPath = models.CharField(max_length=200, default='pass')
 	PosterWinner = models.BooleanField(verbose_name='Poster Winner', default='False')
-	release_form = models.CharField(max_length=15, default='')
+	release_form = models.CharField(max_length=250, default='')
 	reviewed = models.BooleanField(default='False')
 	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
+	AcademicYear = models.CharField(max_length=200, default='')
 
 	def __str__(self):
-		return self.FullPosterTitle
+
+		if(self.reviewed == True):
+			rev = "Reviewed"
+		else:
+			rev = "Not Reviewed"
+		return self.FullPosterTitle + ", " + rev
