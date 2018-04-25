@@ -18,46 +18,65 @@ SCHOOL_CHOICES = (('SAS', 'School of Arts and Sciences'),
 				  ('Dental', 'School of Dental Medicine'),
 				  ('Feinstein', 'Feinstein International Center'),
 				  ('PubSafety', 'Public Safety'),
-				  ('TIE', 'Tufts Institute for the Environment'),
 				  ('Other', 'Other'))
 
-DEPARTMENT_CHOICES = (('AMER', 'American Studies'),
+DEPARTMENT_CHOICES = (('NA', 'Not-Applicable'),
+				  ('AFR', 'Africana Studies'),
+				  ('AMER', 'American Studies'),
 				  ('ANTH', 'Anthropology'),
-				  ('ARC', 'Archaeology'),
-				  ('ARCH', 'Architectural Studies'),
+				  ('ARB', 'Arabic'),
+				  ('ARCH', 'Archaeology'),
+				  ('FAH', 'Art and Art History'),
+				  ('AAST', 'Asian American Studies'),
 				  ('BIO', 'Biology'),
-				  ('BIOPSYCH', 'Biopsychology'),
+				  ('BIOE', 'Bioengineering'),
+				  ('BME', 'Biomedical Engineering'),
+				  ('CHBE', 'Chemical and Biological Engineering'),
+				  ('CHEM', 'Chemistry'),
 				  ('CD', 'Child Study and Human Development'),
 				  ('CHN', 'Chinese'),
 				  ('CEE', 'Civil and Environmental Engineering'),
-				  ('CLA', 'Classics'),
+				  ('CEE', 'Civic Studies'),
+				  ('CLS', 'Classics'),
+				  ('CEE', 'Colonialism Studies'),
 				  ('CH', 'Community Health'),
 				  ('CS', 'Computer Science'),
-				  ('CONS', 'Conservation Medicine'),
+				  ('CIS', 'Center for Interdisciplinary Studies'),
+				  ('DRA', 'Drama and Dance'),
 				  ('EOS', 'Earth and Ocean Studies'),
 				  ('ECON', 'Economics'),
+				  ('ED', 'Education'),
+				  ('ECE','Electrical and Computer Engineering'),
 				  ('ENG_PHYS', 'Engineering Physics'),
 				  ('ENG_SCI', 'Engineering Science'),
 				  ('ENG', 'English'),
 				  ('ELS', 'Entrepreneurial Leadership'),
+				  ('ES', 'Environmental Studies'),
+				  ('FMS', 'Film and Media Studies'),
 				  ('FR', 'French'),
 				  ('HIS', 'History'),
 				  ('IR', 'International Relations'),
+				  ('JS', 'Judaic Studies'),
+				  ('LAS', 'Latin American Studies'),
+				  ('LS', 'Latino Studies'),
 				  ('MATH', 'Mathematics'),
 				  ('ME', 'Mechanical Engineering'),
 				  ('MUS', 'Music'),
 				  ('PJS', 'Peace and Justice Studies'),
 				  ('PHIL', 'Philosophy'),
-				  ('PHY', 'Physics'),
+				  ('PHY', 'Physics and Astronomy'),
 				  ('PS', 'Political Science'),
 				  ('PSY', 'Psychology'),
 				  ('PH', 'Public Health'),
+				  ('RLG', 'Religion'),
 				  ('REE', 'Russian and Eastern European Studies'),
 				  ('SOC', 'Sociology'),
 				  ('SPN', 'Spanish'),
 				  ('STATS', 'Statistics'),
 				  ('TTS', 'Tufts Technology Services'),
+				  ('TIE', 'Tufts Institute for the Environment'),
 				  ('UEP', 'Urban and Environmental Policy and Planning (UEP)'),
+				  ('WGS', 'Women\'s, Gender, and Sexuality Studies'),
 				  ('Other', 'Other'))
 
 
@@ -65,8 +84,14 @@ SEMESTER_CHOICES = (('Spring', 'Spring'),
 					('Summer', 'Summer'),
 					('Fall', 'Fall'))
 
-YEAR_CHOICES = ((2017, 2017),
-				(2018, 2018))
+YEAR_CHOICES = ((2012, 2012),
+				(2013, 2013),
+				(2014, 2014),
+				(2015, 2015),
+				(2016, 2016),
+				(2017, 2017),
+                (2018, 2018),
+                (2019, 2019))
 
 
 TOPIC_CHOICES = (('AWB', 'Animal, Wildlife and Biota'),
@@ -255,19 +280,19 @@ class Poster(models.Model):
 	def upload_path_handler(instance, filename):
 		return "{id}".format(id=instance.SDrivePathway)
 
-	first_name = models.CharField(max_length = 200, verbose_name='Student\'s First Name')
-	last_name = models.CharField(max_length = 200, verbose_name='Student\'s Last Name')
+	first_name = models.CharField(max_length = 200, verbose_name='First Name')
+	last_name = models.CharField(max_length = 200, verbose_name='Last Name')
 	StudentName = models.CharField(max_length = 200, default=first_name)
-	degree = MultiSelectField(choices=DEGREE_CHOICES, verbose_name='Student\'s Degree')
-	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name?')
+	degree = MultiSelectField(choices=DEGREE_CHOICES, verbose_name='Degree')
+	SchoolName = MultiSelectField(choices=SCHOOL_CHOICES, verbose_name='School Name')
 	DepartmentName = MultiSelectField(choices=DEPARTMENT_CHOICES, verbose_name='Student\'s Department(s)')
 	Course_name = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='GIS Course')
 	Semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES, verbose_name='Semester')
 	Year = models.IntegerField(choices=YEAR_CHOICES)
 	FullPosterTitle = models.CharField(max_length=200, verbose_name='Title of GIS Poster')
-	ThemeKeywordL1 = MultiSelectField(choices=TOPIC_CHOICES, verbose_name='Topic Keyword')
-	ThemeKeywordL2 = MultiSelectField(choices=SUBTOPIC_CHOICES, verbose_name='Sub-Topic Keyword')
-	ThemeKeywordL3 = MultiSelectField(choices=METHOD_CHOICES, verbose_name='Methodological Keyword')
+	ThemeKeywordL1 = MultiSelectField(choices=TOPIC_CHOICES, verbose_name='Topic Keyword(s)')
+	ThemeKeywordL2 = MultiSelectField(choices=SUBTOPIC_CHOICES, verbose_name='Sub-Topic Keyword(s)')
+	ThemeKeywordL3 = MultiSelectField(choices=METHOD_CHOICES, verbose_name='Methods')
 	PlaceKeywordGeonames = models.CharField(max_length=200, verbose_name='Place Keywords - Where is your GIS Project located') #dont know if this should be an integerfield or charfield for multiple geonames
 	SDrivePathway = models.CharField(max_length=1000, default="pass")
 	PDFPoster = models.FileField(verbose_name='PDF of Poster', upload_to= upload_path_handler, max_length=500)
@@ -275,7 +300,7 @@ class Poster(models.Model):
 	ThumbnailPath = models.CharField(max_length=200, default='pass')
 	PosterPath = models.CharField(max_length=200, default='pass')
 	PosterWinner = models.BooleanField(verbose_name='Poster Winner', default='False')
-	release_form = models.CharField(max_length=250, default='')
+	release_form = models.CharField(max_length=250, default='', verbose_name="Release ed Form")
 	reviewed = models.BooleanField(default='False')
 	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
 	AcademicYear = models.CharField(max_length=200, default='')

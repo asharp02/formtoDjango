@@ -8,6 +8,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 import json
 from django.core.exceptions import ValidationError
+from urllib.request import Request, urlopen, URLError
 
 """takes in a semester as a string and a year and returns the school-year
 range as a string"""
@@ -18,7 +19,39 @@ def get_years(semester, year):
     else:
         next_year = int(year) + 1
         return str(year) + '-' + str(next_year)
+def geonames_query(location,east='-74.803504',west='-75.413986',north='40.186939',south='39.816113'):
+    '''queries geonames for given location name;
+    bounding box variables contain default values'''
+    #initial variables
+    baseurl = 'http://api.geonames.org/searchJSON?' #baseurl for geonames
+    username = 'kyle.monahan' #make a geonames username
+    json_decode = json.JSONDecoder() #used to parse json response
+    #use try/except to catch timeout errors
+    try:
+        ##combine all variables into query string
+        #query_string = baseurl+'username=%s&name_equals=%s&north=%s&south=%s&east=%s&west=%s&orderby=population' % (username,location,north,south,east,west)
+        query_string = baseurl+'username=%s&name_equals=%s&orderby=relevance' % (username, location)
+        ##run query, read output, and parse json response
+        # print(query_string)
+        response = urlopen(query_string)
+        response_string = response.read()
+        # print(response_string)
+        parsed_response = json_decode.decode(response_string)
+        # print parsed_response
+        #check to make sure there is a response to avoid keyerror
+        if len(parsed_response['geonames']) > 0:
+            first_response = parsed_response['geonames'][0]
+            coordinates = (first_response['lat'],first_response['lng'])
+        else:
+            coordinates = ('','')
+    except:
+        coordinates = ('','')
+        pass
 
+
+    # print("Parsing JSON responses...")
+
+    return coordinates
 class Poster_add():
 
     def poster_new(request):
@@ -49,6 +82,8 @@ class Poster_add():
                 poster.ThumbnailName = pdf_name + '_' + 'thumbnail'
                 poster.PosterPath = pdf_name
                 
+                #poster.PlaceKeywordGeonames = geonames_query(request.POST.get('PlaceKeywordGeonames'))
+
                 poster.Dept_code = dept_code
                 poster.Course_code = course_code
                 poster.Year_range = school_years
