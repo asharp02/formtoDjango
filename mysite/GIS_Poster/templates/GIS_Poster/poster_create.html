@@ -61,12 +61,31 @@
     {% csrf_token %}
 
     {% for field in form %}
+    	{% if field.name == 'PDFPoster' %}
+			<br><div class="label_tag">{{field.label_tag}}</div>
+    		 <div class="help_text">{{field.help_text}}</div>
+    		 {{field}}<br>
+    		 <br>
+    		 <p id="posterpath"> </p>
+		{% elif field.name == 'PlaceKeywordGeonames' or field.name == 'FullPosterTitle' %}
+			<br><div class="label_tag">{{field.label_tag}}</div>
+    		 <div class="help_text">{{field.help_text}}</div>
+    		 {{field}}<br>
+    		 <br>
+    		 <br>	
+		{% elif field.name == 'JobElist' %}
+			<br><div class="label_tag">{{field.label_tag}}</div>
+    		 <div class="help_text">{{field.help_text}}</div>
+    		 {{field}}<br>
+
+		{% else %}
     		<br><div class="label_tag">{{field.label_tag}}</div>
     		 <div class="help_text">{{field.help_text}}</div>
     		 {{field}}<br>
+		{% endif %}
+
 	{% endfor %}
-	<p id="posterpath"> </p>
-	<br>
+
     {{ form.errors }}
     {{ form.non_field_errors }}
     

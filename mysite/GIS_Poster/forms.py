@@ -27,7 +27,7 @@ class PosterCreateForm(forms.ModelForm):
                     'DepartmentName', 'Course_name', 'Semester', 'Year',
                     'FullPosterTitle', 'ThemeKeywordL1', 'ThemeKeywordL2',
                     'ThemeKeywordL3', 'PlaceKeywordGeonames', 'release_form',
-                     'PDFPoster']
+                     'PDFPoster', 'JobElist']
         help_texts = {
             'SchoolName': 'Please select school(s) student is housed in from the list below.',
             'DepartmentName': 'Please select the department(s) the student is housed in from the list below. Select not applicable if the student or faculty is not in a department.',
@@ -46,6 +46,7 @@ class PosterCreateForm(forms.ModelForm):
     Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial="None", to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in? Select not applicable if the student or faculty is not in a course. ', label="Course Name")
     Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect(), help_text='Which Semester was the student enrolled in GIS?')
     Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect(), help_text='What year was the student enrolled in the previously selected course?')
+    JobElist = forms.TypedChoiceField(choices=RELEASE_CHOICES, widget=forms.RadioSelect(), label='Do you want to stay on the Tufts Job elist')
 
 class CourseForm(forms.ModelForm):
     class Meta:

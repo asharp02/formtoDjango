@@ -304,6 +304,7 @@ class Poster(models.Model):
 	reviewed = models.BooleanField(default='False')
 	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
 	AcademicYear = models.CharField(max_length=200, default='')
+	JobElist = models.BooleanField(default='True', verbose_name='Do you want to stay on the Tufts Job elist')
 
 	def __str__(self):
 
