@@ -23,7 +23,6 @@ ELIST_CHOICES = [('Yes', 'Keep me on for now'),
                     ('No', 'Stop spamming me with emails')]
 
 class PosterCreateForm(forms.ModelForm):
-    #char_field_with_list = forms.CharField(required=True)
     class Meta: 
         model = Poster
         fields = ['first_name', 'last_name', 'degree', 'SchoolName',
@@ -44,7 +43,7 @@ class PosterCreateForm(forms.ModelForm):
     #release_form = ListTextWidget(data_list=('Yes', 'No', 'Other'), name='Stuf')
     # ListTextWidget(data_list=('Yes', 'No', 'Other')
     # widget=ListTextWidget(data_list=('Yes, MA', 'No', 'Other'), name='Stuff'),
-    #PlaceKeywordGeonames = forms.CharField(help_text='where?', label="Place Keywords - Where is your GIS Project located")
+
     release_form = forms.TypedChoiceField(choices=RELEASE_CHOICES, widget=forms.RadioSelect(), help_text='The student has read and is in agreement with the website release form. If yes, add initials to text box.', label='Release Form')
     Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial="None", to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in? Select not applicable if the student or faculty is not in a course. ', label="Course Name")
     Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect(), help_text='Which Semester was the student enrolled in GIS?')
@@ -63,23 +62,10 @@ class CourseForm(forms.ModelForm):
 class PosterSearchForm(forms.Form):
     class Meta:
         fields = ['poster_name']
-    # poster_name = forms.CharField(max_length=200)
-    # def clean(self):
-    #     cleaned_data = super(PosterSearchForm, self).clean()
-    #     poster_name = cleaned_data.get("poster_name")
-    #     try:
-    #         Poster.objects.get(FullPosterTitle=poster_name)
-    #     except:
-    #         msg = "There is no record by this poster name"
-    #         self._errors["poster_name"] = self.error_class([msg])
-
-    #         del cleaned_data["poster_name"]
-    #     return cleaned_data
 
     poster_name = forms.ModelChoiceField(queryset=Poster.objects.all(), widget=forms.RadioSelect(), initial="None")
 
 class PosterEditForm(forms.ModelForm):
-    #FullPosterTitle = forms.ModelChoiceField(queryset=Poster.objects.all().order_by('FullPosterTitle'))
 
     class Meta: 
             model = Poster
@@ -100,6 +86,5 @@ class PosterEditForm(forms.ModelForm):
                 'PlaceKeywordGeonames' : 'You must use Geonames to get this code. A Lab Assistant will help you with this field! Lab Assistants, follow the directions on accessing Geonames in directions, please navigate to: http://www.geonames.org',
             }
     release_form = forms.TypedChoiceField(choices=RELEASE_CHOICES, widget=forms.RadioSelect(), help_text='The student has signed the website release form?')
-    #Course_name = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.RadioSelect(), initial="None", to_field_name='Course_Dept', help_text='Which GIS Course is the student currently enrolled in?')
     Semester = forms.TypedChoiceField(choices=SEMESTER_CHOICES, widget=forms.RadioSelect(), help_text='Which Semester was the student enrolled in GIS?')
     Year = forms.TypedChoiceField(choices=YEAR_CHOICES, widget=forms.RadioSelect(), help_text='What year was the student enrolled in GIS?')

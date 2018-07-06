@@ -302,7 +302,7 @@ class Poster(models.Model):
 	PosterWinner = models.BooleanField(verbose_name='Poster Winner', default='False')
 	release_form = models.CharField(max_length=250, default='', verbose_name="Release ed Form")
 	reviewed = models.BooleanField(default='False')
-	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)]) #REMOVE DEFAULT
+	ranking = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
 	AcademicYear = models.CharField(max_length=200, default='')
 	JobElist = models.CharField(default='True', max_length=200, verbose_name='Do you want to stay on the Tufts Job elist')
 

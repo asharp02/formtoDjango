@@ -19,6 +19,7 @@ def get_years(semester, year):
     else:
         next_year = int(year) + 1
         return str(year) + '-' + str(next_year)
+        
 def geonames_query(location,east='-74.803504',west='-75.413986',north='40.186939',south='39.816113'):
     '''queries geonames for given location name;
     bounding box variables contain default values'''
@@ -31,13 +32,11 @@ def geonames_query(location,east='-74.803504',west='-75.413986',north='40.186939
         ##combine all variables into query string
         #query_string = baseurl+'username=%s&name_equals=%s&north=%s&south=%s&east=%s&west=%s&orderby=population' % (username,location,north,south,east,west)
         query_string = baseurl+'username=%s&name_equals=%s&orderby=relevance' % (username, location)
+
         ##run query, read output, and parse json response
-        # print(query_string)
         response = urlopen(query_string)
         response_string = response.read()
-        # print(response_string)
         parsed_response = json_decode.decode(response_string)
-        # print parsed_response
         #check to make sure there is a response to avoid keyerror
         if len(parsed_response['geonames']) > 0:
             first_response = parsed_response['geonames'][0]
@@ -48,10 +47,8 @@ def geonames_query(location,east='-74.803504',west='-75.413986',north='40.186939
         coordinates = ('','')
         pass
 
-
-    # print("Parsing JSON responses...")
-
     return coordinates
+
 class Poster_add():
 
     def poster_new(request):
@@ -121,14 +118,7 @@ class PosterSearch():
             form = PosterSearchForm(request.POST, request.FILES)
             if form.is_valid():
                 pos_name = request.POST.get('poster_name')
-                print(pos_name)
-                # try:
-                #poster_pk = Poster.objects.get(FullPosterTitle=pos_name).pk
                 return redirect('/poster/update/' + str(pos_name))
-        #         except:
-                    
-        #             #raise ValidationError(('Invalid value'),code='invalid')
-        # #            render(request, 'GIS_Poster/poster_search', {'form':form})
 
         else:
             form = PosterSearchForm()
@@ -137,12 +127,9 @@ class PosterSearch():
 
 class PosterUpdate(UpdateView):
     model = Poster
-    #fields = '__all__'
-    # form_class = PosterCreateForm
     template_name = 'GIS_Poster/poster_update_form.html'
     form_class = PosterEditForm
      
-    #success_url = ('<h1>No Page Here</h1>') 
     success_url = ('/poster/success')
 
 class PosterSuccess():
